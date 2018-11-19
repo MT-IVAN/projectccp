@@ -1,0 +1,269 @@
+	html, body, ul, li {
+		margin: 0;
+		padding: 0;
+		border: 0;
+		font-size: 100%;
+		font: inherit;
+		vertical-align: baseline;
+	}
+
+	ul {
+		list-style: none;
+	}
+
+	.container {
+		margin-left: auto;
+		margin-right: auto;
+	}
+		
+	body{
+		color: #474747;
+		font-family: 'Source Sans Pro', sans-serif;
+		font-size: 16pt;
+		font-weight: 300;
+		line-height: 1.65em;
+	}
+
+/* Icon */
+	.icon {
+		text-decoration: none;
+		position: relative;
+		text-decoration: none;
+	}
+		.icon:before {
+			-moz-osx-font-smoothing: grayscale;
+			-webkit-font-smoothing: antialiased;
+			font-family: FontAwesome;
+			font-style: normal;
+			font-weight: normal;
+			text-transform: none !important;
+		}
+		.icon > .label {
+			display: none;
+		}
+		.icon.major {
+			text-align: center;
+			cursor: default;
+			background-color: #37c0fb;
+			color: #fff;
+			border-radius: 100%;
+			display: inline-block;
+			width: 5em;
+			height: 5em;
+			line-height: 5em;
+			box-shadow: 0 0 0 7px white, 0 0 0 8px #e0e0e0;
+			margin: 0 0 2em 0;
+		}
+			.icon.major:before {
+				font-size: 36px;
+			}
+
+/* Lists */
+	ul.default {
+		list-style: disc;
+		padding-left: 1em;
+	}
+		ul.default li {
+			padding-left: 0.5em;
+		}
+	ul.links li {
+		line-height: 2.5em;
+	}
+	ul.icons {
+		cursor: default;
+	}
+		ul.icons li {
+			display: inline-block;
+			line-height: 1em;
+			padding-left: 1.5em;
+		}
+			ul.icons li:first-child {
+				padding-left: 0;
+			}
+			ul.icons li a, ul.icons li span {
+				font-size: 2em;
+				border: 0;
+			}
+	ul.actions {
+		cursor: default;
+	}
+		ul.actions:last-child {
+			margin-bottom: 0;
+		}
+		ul.actions li {
+			display: inline-block;
+			padding: 0 0 0 1.5em;
+		}
+			ul.actions li:first-child {
+				padding: 0;
+			}
+		ul.actions.vertical li {
+			display: block;
+			padding: 1.5em 0 0 0;
+		}
+			ul.actions.vertical li:first-child {
+				padding: 0;
+			}
+	ul.menu li {
+		border-left: solid 1px #e0e0e0;
+		display: inline-block;
+		padding: 0 0 0 1em;
+		margin: 0 0 0 1em;
+	}
+		ul.menu li:first-child {
+			border-left: 0;
+			margin-left: 0;
+			padding-left: 0;
+		}
+/* Wrapper */
+	.wrapper {
+		padding: 5em 0 3em 0;
+	}
+		.wrapper.style3 {
+			background-color: #37c0fb;
+			color: #fff;
+		}
+			.wrapper.style3 .button {
+				background: #fff;
+				color: #474747;
+			}
+				.wrapper.style3 .button:hover {
+					color: #37c0fb !important;
+				}
+/* CTA */
+	#cta {
+		margin-top: 10px;
+		text-align: center;
+		padding: 3.5em 0;        
+	}
+		#cta header h2 {
+			display: inline-block;
+			vertical-align: middle;
+			margin: 0;
+		}
+		#cta header .button {
+			vertical-align: middle;
+			margin-left: 1em;
+		}
+/* Footer */
+	#footer {
+		padding: 4em 0 8em 0;
+		
+	}
+		#footer a {
+			color: inherit;
+			border-bottom-color: rgba(71, 71, 71, 0.25);
+		}
+			#footer a:hover {
+				color: #37c0fb;
+				border-bottom-color: transparent;
+			}
+		#footer .container {
+			margin-bottom: 4em;
+		}
+		#footer .icons {
+			text-align: center;
+			margin: 0;
+		}
+			#footer .icons a {
+				color: #999;
+			}
+				#footer .icons a:hover {
+					color: #474747;
+				}
+		#footer .copyright {
+			color: #999;
+			margin-top: 1.5em;
+			text-align: center;
+			font-size: 0.9em;
+		}
+/* Normal */
+	@media screen and (max-width: 1280px) {
+		/* Basic */
+			body, input, select, textarea {
+				font-size: 13pt;
+				line-height: 1.5em;
+			}
+		/* Lists */
+			ul.icons li a, ul.icons li span {
+				font-size: 1.5em;
+			}
+		
+		/* CTA */
+			#cta {
+				padding: 2em 0;
+			}
+		/* Footer */
+			#footer {
+				padding: 3em 0 3em 0;
+			}
+				#footer .container {
+					margin-bottom: 1em;
+				}
+	}
+/* Mobile */
+	@media screen and (max-width: 736px) {
+		/* Basic */
+			body, input, select, textarea {
+				font-size: 11pt;
+				line-height: 1.35em;
+			}
+		/* Lists */
+			ul.menu li {
+				border: 0;
+				padding: 0;
+				margin: 0;
+				display: block;
+				line-height: 2em;
+			}
+		/* Wrapper */
+
+			.wrapper {
+				padding: 2em 0 1px 0;
+			}
+	}
+/* Mobile (Portrait) */
+	@media screen and (max-width: 480px) {
+		/* Lists */
+			ul.actions li {
+				display: block;
+				padding: 1.5em 0 0 0;
+			}
+				ul.actions li:first-child {
+					padding: 0;
+				}
+		/* Icon */
+			.icon.major {
+				width: 4em;
+				height: 4em;
+				line-height: 4em;
+				box-shadow: 0 0 0 7px white, 0 0 0 8px #e0e0e0;
+			}
+				.icon.major:before {
+					font-size: 24px;
+				}
+		/* Wrapper */
+			.wrapper {
+				padding: 2em 20px 1px 20px;
+			}
+		/* CTA */
+			#cta {
+				padding: 20px;
+			}
+		/* Footer */
+			#footer {
+				padding: 2em 20px;
+				text-align: left;
+			}
+
+	}
+
+/*quita la seleccion a los botones*/
+
+.botonSinBorde{
+
+      outline:none;
+      font-size: 100px;
+      
+
+}	
