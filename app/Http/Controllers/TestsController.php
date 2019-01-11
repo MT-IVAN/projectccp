@@ -7,9 +7,62 @@ use App\Prueba;
 use App\Item;
 use App\Resultado;
 use Illuminate\Support\Facades\DB;
+Use Session;
 
 class TestsController extends Controller
 {
+     
+    public function indexParaAuthNino(Request $request)
+    {
+        $ids = $request->nombreNinoRegistrer; //aqui se obtiene el valor ingresado;
+        $users2 = DB::table('ninios')->where('id_nino', '=', $ids)->get();
+     
+        if(count($users2)>0){
+            foreach ($users2 as $user) {
+            $nombreJugador =$user->nombre;
+            
+            }
+            Session::put('nombreJugador', $nombreJugador);
+            
+        }
+
+        else{
+            return back()->with('msj', 'El id ingresado no se encuentra registrado');
+
+        }   
+
+
+        $prueba = Prueba::where('visible', 1)->get();
+        if($prueba->isEmpty()){
+            $lblPregunta="No existe un prueba disponible";
+            $nvs=$ids=$its=0;
+        }else{
+            $nvs=$this->niveles($prueba[0]->id);
+            if($nvs!=null){
+            $items = Item::where('prueba_id', $prueba[0]->id)->orderBy('nivel', 'ASC')->get();
+            $item = $items[0];
+            $its = $this->aleatorio($item);
+            $ids = $items->pluck('id')->toArray();
+            $ids[count($ids)]=$prueba[0]->porcentaje;
+            $ids[count($ids)]=100;
+            $lblPregunta="Nivel ".$nvs[0]." ¿Donde dice, ".$item->clave."? ";
+
+
+            
+        }
+        else{
+            $lblPregunta="No existen preguntas disponible";
+            $nvs=$ids=$its=0;
+        }
+
+    }
+        return view('test', compact('lblPregunta','its','ids','nvs'));
+    }
+
+
+
+
+
     public function index()
     {
     	$prueba = Prueba::where('visible', 1)->get();
@@ -26,7 +79,7 @@ class TestsController extends Controller
             $ids[count($ids)]=$prueba[0]->porcentaje;
             $ids[count($ids)]=100;
 	    	$lblPregunta="Nivel ".$nvs[0]." ¿Donde dice, ".$item->clave."? ";
-    	}
+            Session::flash('nombreJugador', $nombreJugador);    	}
         else{
             $lblPregunta="No existen preguntas disponible";
             $nvs=$ids=$its=0;

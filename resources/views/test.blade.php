@@ -5,7 +5,7 @@
 	<div class="container">
         <h2>Test</h2>
         <div class="test row">
-        	
+        	<script src="{{ asset('js/saveLocalStorage.js') }}"></script>
         	<div id="pregunta"><p id="preguntaVoice">{{$lblPregunta}}</p></div>
         	@if($ids>=0)
         	<form method="POST" action="test">
@@ -28,8 +28,15 @@
 				</div>
 			@endif
         </div>
+        	@if(session()->has('nombreJugador') )
+				<p id="nombreJugador">{{session('nombreJugador')}}</p>
+			@else
+				<p>ya</p>
+			@endif
 	</div>
 <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
         <script src="{{ asset('js/voice.js') }}"></script>
+        
+        
 
 @endsection

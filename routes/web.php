@@ -38,6 +38,8 @@ Route::get('/prueba/{prueba}', 'PruebasController@index');
 Route::get('/items/{prueba}/{item?}', 'ItemsController@index');
 Route::get('/lista_preguntas/{prueba}', 'ItemsController@lista');
 Route::post('/lista_preguntas/{prueba}', 'PruebasController@preguntas');
+Route::post('/pruebaNino', 'TestsController@indexParaAuthNino');
+
 
 Route::get('/test', 'TestsController@index');
 Route::post('/test', 'TestsController@cambiar');

@@ -5,12 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\Pregunta;
+use DB;
 
 class PreguntasController extends Controller
 {
     public function inicio()
     {
-    	return view('welcome');
+        $users2 = DB::table('ninios')->where('id', '=', 1)->get();  
+        $users = DB::table('ninios')->get();           
+        return view('welcome', compact('users'));
+    }
+    public function pruebaNino(){
+        return redirect('welcome');
     }
 
     public function index()
