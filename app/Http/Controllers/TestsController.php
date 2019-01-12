@@ -11,60 +11,31 @@ Use Session;
 
 class TestsController extends Controller
 {
-     
-    public function indexParaAuthNino(Request $request)
+
+    public function index(Request $request)
     {
+
         $ids = $request->nombreNinoRegistrer; //aqui se obtiene el valor ingresado;
         $users2 = DB::table('ninios')->where('id_nino', '=', $ids)->get();
      
         if(count($users2)>0){
             foreach ($users2 as $user) {
             $nombreJugador =$user->nombre;
+            $idJugadorActual = $user->id;
+            print_r($idJugadorActual);
             
             }
-            Session::put('nombreJugador', $nombreJugador);
+            Session::put('nombreJugador', $nombreJugador. " " . $idJugadorActual);
             
         }
 
         else{
             return back()->with('msj', 'El id ingresado no se encuentra registrado');
 
-        }   
-
-
-        $prueba = Prueba::where('visible', 1)->get();
-        if($prueba->isEmpty()){
-            $lblPregunta="No existe un prueba disponible";
-            $nvs=$ids=$its=0;
-        }else{
-            $nvs=$this->niveles($prueba[0]->id);
-            if($nvs!=null){
-            $items = Item::where('prueba_id', $prueba[0]->id)->orderBy('nivel', 'ASC')->get();
-            $item = $items[0];
-            $its = $this->aleatorio($item);
-            $ids = $items->pluck('id')->toArray();
-            $ids[count($ids)]=$prueba[0]->porcentaje;
-            $ids[count($ids)]=100;
-            $lblPregunta="Nivel ".$nvs[0]." ¿Donde dice, ".$item->clave."? ";
-
-
-            
-        }
-        else{
-            $lblPregunta="No existen preguntas disponible";
-            $nvs=$ids=$its=0;
         }
 
-    }
-        return view('test', compact('lblPregunta','its','ids','nvs'));
-    }
+        // el codigo en la parte de arriba es agregado por Ivan ERaso
 
-
-
-
-
-    public function index()
-    {
     	$prueba = Prueba::where('visible', 1)->get();
     	if($prueba->isEmpty()){
     		$lblPregunta="No existe un prueba disponible";
@@ -79,7 +50,8 @@ class TestsController extends Controller
             $ids[count($ids)]=$prueba[0]->porcentaje;
             $ids[count($ids)]=100;
 	    	$lblPregunta="Nivel ".$nvs[0]." ¿Donde dice, ".$item->clave."? ";
-            Session::flash('nombreJugador', $nombreJugador);    	}
+            //echo "esta es la clave; ".$item->clave;	
+        }
         else{
             $lblPregunta="No existen preguntas disponible";
             $nvs=$ids=$its=0;
@@ -98,6 +70,9 @@ class TestsController extends Controller
         if(count($ids)>3){
             $item = Item::find($ids[0]);
             $this->registrarResultado($item->id,$request->rta);
+            // AQUI se registra la respuesta con el nombre del jugador actual 
+            DB::table('reporte')->insert(['nombre' => Session::get('nombreJugador'), 'clave'=>$item->clave, 'esperado' => $request->rta ]);
+
             //Si no acierta
             if($request->rta!=$item->clave){
                 $valorPregunta = 100/($nvs[1]);

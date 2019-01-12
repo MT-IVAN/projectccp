@@ -10,7 +10,7 @@
     				<br>
     				<br>
     		@if (!Auth::check())
-         	<form method="POST" action="pruebaNino">
+         	<form method="GET" action="test">
 		    <div class="form-group">
   				
     			<center><div class="input-group-addon form-text form-control " id="ampliar2">INGRESA TU ID ABAJO</div></center>
