@@ -10,27 +10,42 @@ use Khill\Lavacharts\Lavacharts;
 
 class ReportesController extends Controller
 {
+    public function consultarResultadosDe($clave){
+        
+    }
     public function index()
     {
     	$user = Auth::user();
 
     	$this->grafica1();
         $this->grafica2();
+        $this->grafica3();
+        
 		
         return view('reporte', compact('user'));
     }
     //Grafica de total de aciertos por pregunta en una prueba
     private function grafica1(){
     	$aciertos  = \Lava::DataTable();
+        $claves = DB::table('preguntas')->get();
+        //$consulta='kj';
+
+        //
+        
+            
 
 		$aciertos->addStringColumn('Cantidad Aciertos')
 	      ->addNumberColumn('Aciertos')
-	      ->addNumberColumn('Fallas')
-	      ->addRow(['1. ¿Donde dice lpm?',  5,3])
-	      ->addRow(['2. ¿Donde dice e?',  3,4])
-	      ->addRow(['3. ¿Donde dice ma?',  2,3])
-	      ->addRow(['4. ¿Donde dice pa?', 1,3])
-	      ->addRow(['5. ¿Donde dice sa?',   4,2]);
+	      ->addNumberColumn('Fallas');
+	      //->addRow(['1. ¿Donde dice lpm?',  5,3]) asi se agrega una valor a las graficas
+          //                                   El primer valor son aciertos. El segundo valor son fallos
+            foreach ($claves as $clave) {
+                
+                   $aciertos->addRow([ '¿Donde dice '.$clave->clave.' ?' , $this->aciertosDe($clave->clave),$this->fallosDe($clave->clave) ]); 
+                   //aqui tengo la clave para consultar los aciertos y los errores en otra funcion
+                 }	 
+        
+  
 
 		\Lava::BarChart('Aciertos', $aciertos, 
             ['title' => 'Resultados en la prueba',
@@ -38,7 +53,8 @@ class ReportesController extends Controller
             'legend' => ['position' => 'bottom'],
             'vAxis' => ['title' => 'Pregunta'],
             'chartArea' => ['width'=> '60%'],
-            'colors'=> ['#2EFE2E', '#F7BE81']
+            'colors'=> ['#2EFE2E', '#F7BE81'],
+            'height' => (36*count($claves))
             ]);
     }
 
@@ -58,4 +74,38 @@ class ReportesController extends Controller
             'chartArea' => ['width'=> '50%']]);
 		
     }
+
+
+    private function grafica3(){
+        $users = DB::table('ninios')->where('id_nino', '!=', '99999')->get();
+
+            if(count($users)>0){//si reportes tiene datos para mostrar
+                    
+
+
+
+            }else{
+                //se debe mostrar una garfica vacia
+            }
+    }
+    public function aciertosDe($clave){
+       $aciertos = DB::table('reportes')->where([
+                    ['clave', '=', $clave],
+                    ['respuesta', '=', $clave]
+                ])->get();
+        
+
+        return count($aciertos);
+    }
+
+    public function fallosDe($clave){
+       $aciertos = DB::table('reportes')->where([
+                    ['clave', '=', $clave],
+                    ['respuesta', '!=', $clave]
+                ])->get();
+        
+
+        return count($aciertos);
+    }
+    
 }

@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -51,10 +52,10 @@
                             <li><a href="{{ route('login') }}">Login</a></li>
                              <li><a href="{{ route('register') }}">Reg</a></li>
                         @else
-                            <li><l<a href="test">Realizar prueba</a></li>
-                            <li><l<a href="preguntas">Gestión de preguntas</a></li>
+                            <li><a href="test">Realizar prueba</a></li>
+                            <li><a href="preguntas">Gestión de preguntas</a></li>
                             <li><a href="prueba">Gestión de pruebas</a></li>
-                            <li><l<a href="reporte">Reportes</a></li>
+                            <li><a href="reporte">Reportes</a></li>
 
 
                             <li class="dropdown">

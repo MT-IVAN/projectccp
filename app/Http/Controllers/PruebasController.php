@@ -13,8 +13,8 @@ class PruebasController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        $pruebasEditable=Prueba::where('editable', '=', 1)->paginate(1);
-        $pruebasNoEditable=Prueba::where('editable', '=', 0)->paginate(1);
+        $pruebasEditable=Prueba::where('editable', '=', 1)->paginate(100);
+        $pruebasNoEditable=Prueba::where('editable', '=', 0)->paginate(100);
         //$pruebas = Prueba::all();
 
         //$pruebas = Prueba::paginate(4);

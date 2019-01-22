@@ -44,4 +44,10 @@ Route::post('/lista_preguntas/{prueba}', 'PruebasController@preguntas');
 Route::get('/test', 'TestsController@index');
 Route::post('/test', 'TestsController@cambiar');
 
+
+
+Route::get('/pruebaDos', 'TestsController@indexDos');
+
+
+
 Route::get('/reporte', 'ReportesController@index');

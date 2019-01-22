@@ -17,13 +17,15 @@ class TestsController extends Controller
 
         $ids = $request->nombreNinoRegistrer; //aqui se obtiene el valor ingresado;
         $users2 = DB::table('ninios')->where('id_nino', '=', $ids)->get();
+        if($ids==null || $ids==''){
+            $ids = 99999;
+        }
+
      
         if(count($users2)>0){
             foreach ($users2 as $user) {
             $nombreJugador =$user->nombre;
             $idJugadorActual = $user->id;
-            print_r($idJugadorActual);
-            
             }
             Session::put('nombreJugador', $nombreJugador. " " . $idJugadorActual);
             
@@ -35,8 +37,17 @@ class TestsController extends Controller
         }
 
         // el codigo en la parte de arriba es agregado por Ivan ERaso
+        //obtengo el id de la prueba.
+
+
 
     	$prueba = Prueba::where('visible', 1)->get();
+        //---------codigo de ivan eraso
+        $idDeLaPruebaActual = $prueba[0]->id;
+        //echo $idDeLaPruebaActual. ' -el por';
+        //----------------------
+
+
     	if($prueba->isEmpty()){
     		$lblPregunta="No existe un prueba disponible";
             $nvs=$ids=$its=0;
@@ -71,7 +82,20 @@ class TestsController extends Controller
             $item = Item::find($ids[0]);
             $this->registrarResultado($item->id,$request->rta);
             // AQUI se registra la respuesta con el nombre del jugador actual 
-            DB::table('reporte')->insert(['nombre' => Session::get('nombreJugador'), 'clave'=>$item->clave, 'esperado' => $request->rta ]);
+
+            //prueba para sacar el id de la prueba.
+            $idPrueba = Prueba::where('visible', 1)->get();
+            $idDeLaPruebaActual = $idPrueba[0]->id;  // FALTA POR AGREGAR ESTE CAMPO A LA DB
+            $nombreDeLaPrueba = $idPrueba[0]->nombre;
+            $nombreIdJugador = Session::get('nombreJugador');
+            $vecConNombreYId = explode(' ', $nombreIdJugador);// en la posicion 0 esta nombre y en la 1 esta el id       
+
+            DB::table('reportes')->insert(['id_ninio' => $vecConNombreYId[1],
+                                           'id_prueba'=>$idDeLaPruebaActual,
+                                           'nombre_prueba'=>$nombreDeLaPrueba,
+                                           'nombre_ninio'=>$vecConNombreYId[0],
+                                           'clave'=>$item->clave, 
+                                           'respuesta' => $request->rta ]);
 
             //Si no acierta
             if($request->rta!=$item->clave){

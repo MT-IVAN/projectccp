@@ -28,11 +28,15 @@
 				</div>
 			@endif
         </div>
+
+        	
         	@if(session()->has('nombreJugador') )
-				<p id="nombreJugador">{{session('nombreJugador')}}</p>
+				<p id="nombreJugador">{{session('nombreJugador')}}  fdgkjfdsfkjadshgsdfo</p>
 			@else
 				<p>ya</p>
 			@endif
+
+
 	</div>
 <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
         <script src="{{ asset('js/voice.js') }}"></script>

@@ -2,6 +2,7 @@
 
 @section('content')
 
+
 	<div class="container">
        
         <!-- @if (Auth::guest())<a href="/ccpproject/public/" > <center><img src="images/listosajugar.png"></center> </a> -->
