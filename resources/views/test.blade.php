@@ -3,7 +3,8 @@
 @section('content')
 
 	<div class="container">
-        <h2>Test</h2>
+        <div><h2>Test</h2>
+        	<img id="imgPlayAgain" src="../public/images/btn-play.png"></div>
         <div class="test row">
         	<script src="{{ asset('js/saveLocalStorage.js') }}"></script>
         	<div id="pregunta"><p id="preguntaVoice">{{$lblPregunta}}</p></div>
@@ -30,11 +31,7 @@
         </div>
 
         	
-        	@if(session()->has('nombreJugador') )
-				<p id="nombreJugador">{{session('nombreJugador')}}  fdgkjfdsfkjadshgsdfo</p>
-			@else
-				<p>ya</p>
-			@endif
+        	
 
 
 	</div>

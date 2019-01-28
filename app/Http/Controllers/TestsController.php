@@ -27,7 +27,7 @@ class TestsController extends Controller
             $nombreJugador =$user->nombre;
             $idJugadorActual = $user->id;
             }
-            Session::put('nombreJugador', $nombreJugador. " " . $idJugadorActual);
+            Session::put('nombreJugador', $nombreJugador. "separaNombreYJugador" . $idJugadorActual);
             
         }
 
@@ -59,6 +59,7 @@ class TestsController extends Controller
             $its = $this->aleatorio($item);
             $ids = $items->pluck('id')->toArray();
             $ids[count($ids)]=$prueba[0]->porcentaje;
+           
             $ids[count($ids)]=100;
 	    	$lblPregunta="Nivel ".$nvs[0]." ¿Donde dice, ".$item->clave."? ";
             //echo "esta es la clave; ".$item->clave;	
@@ -88,7 +89,7 @@ class TestsController extends Controller
             $idDeLaPruebaActual = $idPrueba[0]->id;  // FALTA POR AGREGAR ESTE CAMPO A LA DB
             $nombreDeLaPrueba = $idPrueba[0]->nombre;
             $nombreIdJugador = Session::get('nombreJugador');
-            $vecConNombreYId = explode(' ', $nombreIdJugador);// en la posicion 0 esta nombre y en la 1 esta el id       
+            $vecConNombreYId = explode('separaNombreYJugador', $nombreIdJugador);// en la posicion 0 esta nombre y en la 1 esta el id       
 
             DB::table('reportes')->insert(['id_ninio' => $vecConNombreYId[1],
                                            'id_prueba'=>$idDeLaPruebaActual,
@@ -99,8 +100,11 @@ class TestsController extends Controller
 
             //Si no acierta
             if($request->rta!=$item->clave){
-                $valorPregunta = 100/($nvs[1]);
-                $ids[count($ids)-1]=$ids[count($ids)-1]-$valorPregunta;
+                //$valorPregunta =  round((100/($nvs[1])),0);
+                $valorPregunta =  100/($nvs[1]);
+                
+                $ids[count($ids)-1]=round(($ids[count($ids)-1]-$valorPregunta),0);
+                echo $ids[count($ids)-1];
             }
             array_splice($ids, 0, 1);
             //para determinar el nivel
@@ -123,6 +127,25 @@ class TestsController extends Controller
         }else{
             $item = Item::find($ids[0]);
             $this->registrarResultado($item->id,$request->rta);
+
+            //Registro de la ultima prueba
+            //prueba para sacar el id de la prueba.
+            $idPrueba = Prueba::where('visible', 1)->get();
+            $idDeLaPruebaActual = $idPrueba[0]->id;  // FALTA POR AGREGAR ESTE CAMPO A LA DB
+            $nombreDeLaPrueba = $idPrueba[0]->nombre;
+            $nombreIdJugador = Session::get('nombreJugador');
+            $vecConNombreYId = explode('separaNombreYJugador', $nombreIdJugador);// en la posicion 0 esta nombre y en la 1 esta el id       
+
+            DB::table('reportes')->insert(['id_ninio' => $vecConNombreYId[1],
+                                           'id_prueba'=>$idDeLaPruebaActual,
+                                           'nombre_prueba'=>$nombreDeLaPrueba,
+                                           'nombre_ninio'=>$vecConNombreYId[0],
+                                           'clave'=>$item->clave, 
+                                           'respuesta' => $request->rta ]);
+
+            //-------
+
+
             $lblPregunta="Fin de la prueba";
             $nvs=$its=0;
             $ids = -1;

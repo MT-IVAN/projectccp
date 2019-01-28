@@ -37,10 +37,9 @@ class ReportesController extends Controller
 		$aciertos->addStringColumn('Cantidad Aciertos')
 	      ->addNumberColumn('Aciertos')
 	      ->addNumberColumn('Fallas');
-	      //->addRow(['1. ¿Donde dice lpm?',  5,3]) asi se agrega una valor a las graficas
-          //                                   El primer valor son aciertos. El segundo valor son fallos
+	    
             foreach ($claves as $clave) {
-                
+                  
                    $aciertos->addRow([ '¿Donde dice '.$clave->clave.' ?' , $this->aciertosDe($clave->clave),$this->fallosDe($clave->clave) ]); 
                    //aqui tengo la clave para consultar los aciertos y los errores en otra funcion
                  }	 
@@ -54,8 +53,10 @@ class ReportesController extends Controller
             'vAxis' => ['title' => 'Pregunta'],
             'chartArea' => ['width'=> '60%'],
             'colors'=> ['#2EFE2E', '#F7BE81'],
-            'height' => (36*count($claves))
+            'height' => (50*count($claves))
             ]);
+
+
     }
 
     //Grafica de lineas
@@ -87,6 +88,8 @@ class ReportesController extends Controller
             }else{
                 //se debe mostrar una garfica vacia
             }
+
+            
     }
     public function aciertosDe($clave){
        $aciertos = DB::table('reportes')->where([
@@ -107,5 +110,7 @@ class ReportesController extends Controller
 
         return count($aciertos);
     }
+  
+
     
 }

@@ -36,6 +36,9 @@
   width: 90%;
 }
 
+#preguntaVoice{
+  color: #ffffff !important;
+}
 #clave3, #clave2, #clave1{
   width: 50%;
   height: 45%;
@@ -117,14 +120,43 @@
 #ampliar{
   font-size: 50px;
   height: 105px;
+  width: 600px;
   text-align: center;
+  margin-left: 23.7%;
+  margin-top: 5px;
+  margin-bottom: 5px;
   color: #37c0fb;
+  
 }
 #ampliar2{
   font-size: 50px;
-  height: 105px;
+  /*height: 105px;*/
+  width: 600px;
   text-align: center;
+  border-radius: 10 px solid black;
   
+}
+
+
+#ampliarSubmit{
+  font-size: 50px;
+  height: 80px;
+  width: 600px;
+  text-align: center;
+  margin-left: 23.7%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  /*color: #37c0fb;*/
+
+
+}
+
+/* cambia el tamanio de la imagen play
+ */
+#imgPlayAgain{
+  width: 30px;
+  margin-left: 8px;
+  cursor: pointer;
 }
 
 /* FIN:::*/

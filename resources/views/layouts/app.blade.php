@@ -16,6 +16,10 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/miestilo.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+
+    <!--libreria para hacer graficas con D3 -->
+    <script src="https://d3js.org/d3.v5.js"></script>
+
     <!--<link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">-->
      <link href="{{ asset('css/footer_style.css') }}" rel="stylesheet">
      </head>
@@ -52,7 +56,7 @@
                             <li><a href="{{ route('login') }}">Login</a></li>
                              <li><a href="{{ route('register') }}">Reg</a></li>
                         @else
-                            <li><a href="test">Realizar prueba</a></li>
+                            <!--<li><a href="test">Realizar prueba</a></li>-->
                             <li><a href="preguntas">Gestión de preguntas</a></li>
                             <li><a href="prueba">Gestión de pruebas</a></li>
                             <li><a href="reporte">Reportes</a></li>
