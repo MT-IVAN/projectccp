@@ -22,7 +22,7 @@ class PreguntasController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $preguntas = Pregunta::orderBy('nivel', 'ASC')->paginate(20);
+        $preguntas = Pregunta::orderBy('nivel', 'ASC')->paginate(50);
        // $preguntas = Pregunta::paginate(1);
         return view('preguntas', compact('user','preguntas'));
     }

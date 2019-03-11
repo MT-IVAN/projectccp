@@ -17,17 +17,16 @@ class TestsController extends Controller
 
         $ids = $request->nombreNinoRegistrer; //aqui se obtiene el valor ingresado;
         $users2 = DB::table('ninios')->where('id_nino', '=', $ids)->get();
-        if($ids==null || $ids==''){
-            $ids = 99999;
-        }
-
+       
      
         if(count($users2)>0){
             foreach ($users2 as $user) {
             $nombreJugador =$user->nombre;
             $idJugadorActual = $user->id;
             }
-            Session::put('nombreJugador', $nombreJugador. "separaNombreYJugador" . $idJugadorActual);
+            Session::put('nombreJugador', $nombreJugador."separaNombreYJugador".$idJugadorActual);
+            Session::put('puntajeError', 0);
+
             
         }
 
@@ -44,7 +43,6 @@ class TestsController extends Controller
     	$prueba = Prueba::where('visible', 1)->get();
         //---------codigo de ivan eraso
         $idDeLaPruebaActual = $prueba[0]->id;
-        //echo $idDeLaPruebaActual. ' -el por';
         //----------------------
 
 
@@ -59,10 +57,10 @@ class TestsController extends Controller
             $its = $this->aleatorio($item);
             $ids = $items->pluck('id')->toArray();
             $ids[count($ids)]=$prueba[0]->porcentaje;
+
            
             $ids[count($ids)]=100;
 	    	$lblPregunta="Nivel ".$nvs[0]." ¿Donde dice, ".$item->clave."? ";
-            //echo "esta es la clave; ".$item->clave;	
         }
         else{
             $lblPregunta="No existen preguntas disponible";
@@ -78,6 +76,8 @@ class TestsController extends Controller
         $ids = unserialize($ids);
         $nvs = $request->nvs;//cantidad de preguntas por nivel        
         $nvs = unserialize($nvs);
+                                       
+
         //Si aún existen preguntas y el porcentaje de aciertos es mayor al propuesto
         if(count($ids)>3){
             $item = Item::find($ids[0]);
@@ -86,7 +86,7 @@ class TestsController extends Controller
 
             //prueba para sacar el id de la prueba.
             $idPrueba = Prueba::where('visible', 1)->get();
-            $idDeLaPruebaActual = $idPrueba[0]->id;  // FALTA POR AGREGAR ESTE CAMPO A LA DB
+            $idDeLaPruebaActual = $idPrueba[0]->id; 
             $nombreDeLaPrueba = $idPrueba[0]->nombre;
             $nombreIdJugador = Session::get('nombreJugador');
             $vecConNombreYId = explode('separaNombreYJugador', $nombreIdJugador);// en la posicion 0 esta nombre y en la 1 esta el id       
@@ -100,25 +100,39 @@ class TestsController extends Controller
 
             //Si no acierta
             if($request->rta!=$item->clave){
-                //$valorPregunta =  round((100/($nvs[1])),0);
                 $valorPregunta =  100/($nvs[1]);
-                
-                $ids[count($ids)-1]=round(($ids[count($ids)-1]-$valorPregunta),0);
-                echo $ids[count($ids)-1];
+                $punError = Session::get('puntajeError');
+                $punError+=1;
+                Session::put('puntajeError', $punError);
+                $ids[count($ids)-1]=($ids[count($ids)-1]-$valorPregunta);
             }
+            else
+            Session::put('puntajeError',0);
+
+
+
             array_splice($ids, 0, 1);
             //para determinar el nivel
             if($nvs[2]>1){
-                $nvs[2]--;
-            }else{
-                array_splice($nvs, 0, 3);
-                if($ids[count($ids)-1]>=$ids[count($ids)-2]){
-                    $ids[count($ids)-1]=100;    
-                }else{
+                 if(Session::get('puntajeError')>2){
+                    echo "entreo";
                     $lblPregunta="Fin de la prueba";
                     $nvs=$its=0;
                     $ids = -1;
-                    return view('test', compact('lblPregunta','its','ids','nvs'));
+        
+                    return view('test', compact('lblPregunta','its','ids','nvs','mal'));
+                 }
+                $nvs[2]--;
+            }else{
+                array_splice($nvs, 0, 3);
+                    //if($ids[count($ids)-1]>=$ids[count($ids)-2]){
+                if(Session::get('puntajeError')>2){
+                   echo "ecntro aqui";
+                
+                    $lblPregunta="Fin de la prueba";
+                    $nvs=$its=0;
+                    $ids = -1;
+                    return view('test', compact('lblPregunta','its','ids','nvs','mal'));
                 }
             }
         	$item = Item::find($ids[0]);
@@ -131,7 +145,7 @@ class TestsController extends Controller
             //Registro de la ultima prueba
             //prueba para sacar el id de la prueba.
             $idPrueba = Prueba::where('visible', 1)->get();
-            $idDeLaPruebaActual = $idPrueba[0]->id;  // FALTA POR AGREGAR ESTE CAMPO A LA DB
+            $idDeLaPruebaActual = $idPrueba[0]->id;
             $nombreDeLaPrueba = $idPrueba[0]->nombre;
             $nombreIdJugador = Session::get('nombreJugador');
             $vecConNombreYId = explode('separaNombreYJugador', $nombreIdJugador);// en la posicion 0 esta nombre y en la 1 esta el id       
@@ -150,7 +164,8 @@ class TestsController extends Controller
             $nvs=$its=0;
             $ids = -1;
         }
-        return view('test', compact('lblPregunta','its','ids','nvs'));
+        //jjhhhecho Session::get('puntajeError');  
+        return view('test', compact('lblPregunta','its','ids','nvs', 'mal'));
     }
     //Se encarga de ubicar de forma aleatoria las opciones de respuesta
     private function aleatorio($item){

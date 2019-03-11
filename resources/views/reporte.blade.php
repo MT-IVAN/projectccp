@@ -8,8 +8,11 @@
            
             <div class="div_grafica">
                  <div id="aciertos_div"></div>
+                 <div id="aciertos_div2"></div>
                @barchart('Aciertos', 'aciertos_div') 
+            
             </div>
+
 
           
 

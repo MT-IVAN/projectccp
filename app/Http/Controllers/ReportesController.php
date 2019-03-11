@@ -20,6 +20,7 @@ class ReportesController extends Controller
     	$this->grafica1();
         $this->grafica2();
         $this->grafica3();
+       
         
 		
         return view('reporte', compact('user'));
@@ -46,7 +47,7 @@ class ReportesController extends Controller
         
   
 
-		\Lava::BarChart('Aciertos', $aciertos, 
+		\Lava::BarChart('Aciertos', $aciertos,
             ['title' => 'Resultados en la prueba',
             'titleTextStyle' => ['color' => 'black','fontSize' => 16],
             'legend' => ['position' => 'bottom'],
@@ -54,6 +55,16 @@ class ReportesController extends Controller
             'chartArea' => ['width'=> '60%'],
             'colors'=> ['#2EFE2E', '#F7BE81'],
             'height' => (50*count($claves))
+            ]);
+
+        \Lava::BarChart('Aciersdfsfdstos', $aciertos,
+            ['title' => 'Resultados en la prueba',
+            'titleTextStyle' => ['color' => 'black','fontSize' => 16],
+            'legend' => ['position' => 'bottom'],
+            'vAxis' => ['title' => 'Pregunta'],
+            'chartArea' => ['width'=> '60%'],
+            'colors'=> ['#2EFE2E', '#F7BE81'],
+            'height' => (80*count($claves))
             ]);
 
 
@@ -109,6 +120,15 @@ class ReportesController extends Controller
         
 
         return count($aciertos);
+    }
+    public function union(){
+
+      $users = DB::table('users')
+                     ->select(DB::raw('count(*) as user_count, status'))
+                     ->where('status', '<>', 1)
+                     ->groupBy('status')
+                     ->get();
+        return $query;
     }
   
 
