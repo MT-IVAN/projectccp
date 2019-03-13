@@ -1,4 +1,4 @@
-$(document).ready(function() {
+ $(document).ready(function() {
 
 /*
  	var letraComparar =  $("#preguntaVoice").text();
@@ -15,8 +15,8 @@ $(document).ready(function() {
 	 	var definitiva = claveSola;
 
 		if(letraComparar !="Fin de la prueba" && letraComparar!= "No existen preguntas disponible"){
-	 	responsiveVoice.speak("¿Donde dice? "+ claveSola, "Spanish Latin American Female", {rate: 0.7});
-	 	//window.setTimeout(decir(definitiva), 500);
+	 	responsiveVoice.speak("¿Donde dice? ", "Spanish Latin American Female", {rate: 0.7});
+	 	window.setTimeout(decir(definitiva), 500);
 	 }
 
 

@@ -22,7 +22,7 @@ class TestsController extends Controller
         if(count($users2)>0){
             foreach ($users2 as $user) {
             $nombreJugador =$user->nombre;
-            $idJugadorActual = $user->id;
+            $idJugadorActual = $user->id_nino;
             }
             Session::put('nombreJugador', $nombreJugador."separaNombreYJugador".$idJugadorActual);
             Session::put('puntajeError', 0);
@@ -115,7 +115,7 @@ class TestsController extends Controller
             //para determinar el nivel
             if($nvs[2]>1){
                  if(Session::get('puntajeError')>2){
-                    echo "entreo";
+                  
                     $lblPregunta="Fin de la prueba";
                     $nvs=$its=0;
                     $ids = -1;
@@ -127,7 +127,7 @@ class TestsController extends Controller
                 array_splice($nvs, 0, 3);
                     //if($ids[count($ids)-1]>=$ids[count($ids)-2]){
                 if(Session::get('puntajeError')>2){
-                   echo "ecntro aqui";
+                  
                 
                     $lblPregunta="Fin de la prueba";
                     $nvs=$its=0;

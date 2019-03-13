@@ -51,3 +51,4 @@ Route::get('/pruebaDos', 'TestsController@indexDos');
 
 
 Route::get('/reporte', 'ReportesController@index');
+

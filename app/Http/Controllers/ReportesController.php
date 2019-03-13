@@ -19,7 +19,67 @@ class ReportesController extends Controller
 
     	$this->grafica1();
         $this->grafica2();
-        $this->grafica3();
+       
+         $ninios = DB::table('ninios')->get();
+        $itemPregunta = DB::table('preguntas')->get();
+         $textoCsv = "id,nombre,";
+         
+
+            if(count($itemPregunta)>0){//si textoCsvs tiene datos para mostrar
+                 
+           
+                for($i = 0 ; $i<count($itemPregunta);$i++){
+                     $textoCsv = $textoCsv . $itemPregunta[$i]->clave. ",";
+                     $comparar[]= $itemPregunta[$i]->clave;
+                }
+                $textoCsv =  $textoCsv . "salto";
+
+                for($i = 0 ; $i<count($ninios);$i++){
+
+                    $textoCsv = $textoCsv. $ninios[$i]->id_nino. ",". $ninios[$i]->nombre."," ;
+                     $reportes = DB::table('reportes')->where('id_ninio','=',$ninios[$i]->id_nino)->get();
+
+
+                     for($j = 0 ; $j<count($comparar);$j++){
+                      
+                        if($j<count($reportes)){
+                                if($comparar[$j]== $reportes[$j]->respuesta){
+                            $textoCsv =  $textoCsv . "1". ",";
+                        }
+                        else{
+                            $textoCsv =  $textoCsv . "0". ",";   
+                        }
+                        }
+                        else {
+                           $textoCsv =  $textoCsv . "-". ",";   
+                        }
+                        
+
+                        
+                        
+
+
+                   
+                 }
+                    $textoCsv =  $textoCsv . "salto";
+
+                }
+
+
+
+
+
+                printf($textoCsv);   
+
+
+
+
+            }else{
+                //se debe mostrar una garfica vacia
+            }
+
+
+
        
         
 		
@@ -89,19 +149,37 @@ class ReportesController extends Controller
 
 
     private function grafica3(){
-        $users = DB::table('ninios')->where('id_nino', '!=', '99999')->get();
 
-            if(count($users)>0){//si reportes tiene datos para mostrar
-                    
+
+ 
+        
+      
+
+
+       // $users = DB::table('ninios')->where('id_nino', '!=', '99999')->get();
+        $ninios = DB::table('ninios')->get();
+        $itemPregunta = DB::table('preguntas')->get();
+         $reporte = "";
+
+
+            if(count($itemPregunta)>0){//si reportes tiene datos para mostrar
+                foreach($itemPregunta as $item){
+                   $reporte = $reporte + $item->clave;
+                }
+           
+
+
+
 
 
 
             }else{
                 //se debe mostrar una garfica vacia
             }
-
-            
+     
     }
+
+
     public function aciertosDe($clave){
        $aciertos = DB::table('reportes')->where([
                     ['clave', '=', $clave],
@@ -129,6 +207,11 @@ class ReportesController extends Controller
                      ->groupBy('status')
                      ->get();
         return $query;
+    }
+
+
+    public function generaText(){
+
     }
   
 
